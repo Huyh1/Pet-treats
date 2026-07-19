@@ -1,0 +1,13 @@
+# dev：连接真实 MySQL（192.168.1.31）
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.1.31:3306/pet_treats?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: Bb1#Cc2$
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      continue-on-error: false

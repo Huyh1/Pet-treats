@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  沙箱专用 Maven settings.xml
+  - 配置本地 HTTP 代理（沙箱通过 127.0.0.1:18080 访问外网）
+  - 配置 Aliyun 镜像（加速国内访问）
+  说明：此文件仅用于沙箱/CI 环境，常规开发环境不需要此文件，可直接使用 mvn 默认配置。
+  使用方式：mvn -s maven-settings.xml clean package -DskipTests
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <proxies>
+        <proxy>
+            <id>local-proxy</id>
+            <active>true</active>
+            <protocol>http</protocol>
+            <host>127.0.0.1</host>
+            <port>18080</port>
+            <nonProxyHosts>localhost|127.0.0.1</nonProxyHosts>
+        </proxy>
+        <proxy>
+            <id>local-proxy-https</id>
+            <active>true</active>
+            <protocol>https</protocol>
+            <host>127.0.0.1</host>
+            <port>18080</port>
+            <nonProxyHosts>localhost|127.0.0.1</nonProxyHosts>
+        </proxy>
+    </proxies>
+
+    <mirrors>
+        <mirror>
+            <id>aliyun-public</id>
+            <mirrorOf>*</mirrorOf>
+            <name>Aliyun Public</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </mirror>
+    </mirrors>
+</settings>
