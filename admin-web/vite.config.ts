@@ -12,6 +12,20 @@ export default defineConfig({
   },
   server: {
     port: 5174,
+    host: '0.0.0.0',
+    // 允许外部 host 头（隧道场景必需，例如 serveo / pinggy 转发的随机域名）
+    allowedHosts: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+    },
+  },
+  preview: {
+    port: 5174,
+    host: '0.0.0.0',
+    allowedHosts: true,
     proxy: {
       '/api': {
         target: 'http://localhost:8080',

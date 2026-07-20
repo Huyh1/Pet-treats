@@ -24,15 +24,15 @@ public class R<T> implements Serializable {
     }
 
     public static <T> R<T> ok() {
-        return new R<>(200, "success", null);
+        return new R<>(0, "success", null);
     }
 
     public static <T> R<T> ok(T data) {
-        return new R<>(200, "success", data);
+        return new R<>(0, "success", data);
     }
 
     public static <T> R<T> ok(String msg, T data) {
-        return new R<>(200, msg, data);
+        return new R<>(0, msg, data);
     }
 
     public static <T> R<T> fail(String msg) {

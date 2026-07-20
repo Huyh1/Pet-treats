@@ -16,17 +16,17 @@ import type { Order, OrderPageQuery, OrderStatus } from '../types/api';
 import { formatDateTime, formatMoney } from '../utils/format';
 import OrderDetail from './OrderDetail';
 
-// 订单状态映射
+// 订单状态映射（与后端枚举一致）
 const STATUS_META: Record<
   OrderStatus | 'all',
   { label: string; color: string }
 > = {
   all: { label: '全部', color: 'default' },
-  pending_payment: { label: '待付款', color: 'warning' },
-  paid: { label: '已付款', color: 'processing' },
-  shipped: { label: '已发货', color: 'blue' },
-  completed: { label: '已完成', color: 'success' },
-  cancelled: { label: '已取消', color: 'default' },
+  PENDING: { label: '待付款', color: 'warning' },
+  PAID: { label: '已付款', color: 'processing' },
+  SHIPPED: { label: '已发货', color: 'blue' },
+  COMPLETED: { label: '已完成', color: 'success' },
+  CANCELLED: { label: '已取消', color: 'default' },
 };
 
 export default function OrderList() {

@@ -21,12 +21,12 @@ import {
 import type { Review, ReviewPageQuery, ReviewStatus } from '../types/api';
 import { formatDateTime } from '../utils/format';
 
-// 评价状态映射
+// 评价状态映射（与后端一致：0=待审核 1=已通过 2=已驳回）
 const STATUS_META: Record<ReviewStatus | 'all', { label: string; color: string }> = {
   all: { label: '全部', color: 'default' },
-  pending: { label: '待审核', color: 'warning' },
-  approved: { label: '已通过', color: 'success' },
-  rejected: { label: '已驳回', color: 'error' },
+  0: { label: '待审核', color: 'warning' },
+  1: { label: '已通过', color: 'success' },
+  2: { label: '已驳回', color: 'error' },
 };
 
 // 评分星级渲染（简单文本星）
@@ -42,9 +42,7 @@ function RatingStars({ value }: { value: number }) {
 export default function ReviewList() {
   const queryClient = useQueryClient();
   const { message } = App.useApp();
-  const [activeStatus, setActiveStatus] = useState<ReviewStatus | 'all'>(
-    'pending',
-  );
+  const [activeStatus, setActiveStatus] = useState<ReviewStatus | 'all'>(0);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -158,23 +156,23 @@ export default function ReviewList() {
       fixed: 'right',
       render: (_, record) => (
         <Space size="small">
-          {record.status !== 'approved' && (
+          {record.status !== 1 && (
             <Button
               type="link"
               size="small"
               icon={<CheckOutlined />}
               onClick={() =>
-                statusMutation.mutate({ id: record.id, status: 'approved' })
+                statusMutation.mutate({ id: record.id, status: 1 })
               }
             >
               通过
             </Button>
           )}
-          {record.status !== 'rejected' && (
+          {record.status !== 2 && (
             <Popconfirm
               title="确认驳回该评价？"
               onConfirm={() =>
-                statusMutation.mutate({ id: record.id, status: 'rejected' })
+                statusMutation.mutate({ id: record.id, status: 2 })
               }
               okText="驳回"
               cancelText="取消"
@@ -208,7 +206,7 @@ export default function ReviewList() {
   const tabItems = (
     Object.keys(STATUS_META) as (ReviewStatus | 'all')[]
   ).map((key) => ({
-    key,
+    key: String(key),
     label: STATUS_META[key].label,
   }));
 
@@ -220,9 +218,11 @@ export default function ReviewList() {
     >
       <Tabs
         items={tabItems}
-        activeKey={activeStatus}
+        activeKey={String(activeStatus)}
         onChange={(key) => {
-          setActiveStatus(key as ReviewStatus | 'all');
+          // key 是字符串，'all' / '0' / '1' / '2'
+          const next = key === 'all' ? 'all' : (Number(key) as ReviewStatus);
+          setActiveStatus(next);
           setPagination((p) => ({ ...p, current: 1 }));
         }}
         style={{ padding: '0 16px' }}

@@ -5,24 +5,24 @@ import { fetchOrderDetail, updateOrderStatus } from '../api/order';
 import type { OrderItem, OrderStatus } from '../types/api';
 import { formatDateTime, formatMoney } from '../utils/format';
 
-// 订单状态映射（与 OrderList 保持一致）
+// 订单状态映射（与 OrderList 保持一致，与后端枚举大小写一致）
 const STATUS_META: Record<OrderStatus, { label: string; color: string }> = {
-  pending_payment: { label: '待付款', color: 'warning' },
-  paid: { label: '已付款', color: 'processing' },
-  shipped: { label: '已发货', color: 'blue' },
-  completed: { label: '已完成', color: 'success' },
-  cancelled: { label: '已取消', color: 'default' },
+  PENDING: { label: '待付款', color: 'warning' },
+  PAID: { label: '已付款', color: 'processing' },
+  SHIPPED: { label: '已发货', color: 'blue' },
+  COMPLETED: { label: '已完成', color: 'success' },
+  CANCELLED: { label: '已取消', color: 'default' },
 };
 
 // 订单状态流转按钮
 function getNextActions(status: OrderStatus): { label: string; next: OrderStatus; danger?: boolean }[] {
   switch (status) {
-    case 'pending_payment':
-      return [{ label: '标记已付款', next: 'paid' }];
-    case 'paid':
-      return [{ label: '发货', next: 'shipped' }];
-    case 'shipped':
-      return [{ label: '完成订单', next: 'completed' }];
+    case 'PENDING':
+      return [{ label: '标记已付款', next: 'PAID' }];
+    case 'PAID':
+      return [{ label: '发货', next: 'SHIPPED' }];
+    case 'SHIPPED':
+      return [{ label: '完成订单', next: 'COMPLETED' }];
     default:
       return [];
   }
@@ -113,14 +113,14 @@ export default function OrderDetail({
       extra={
         order && nextActions.length > 0 ? (
           <Space>
-            {order.status !== 'cancelled' &&
-              order.status !== 'completed' && (
+            {order.status !== 'CANCELLED' &&
+              order.status !== 'COMPLETED' && (
                 <Popconfirm
                   title="确认取消该订单？"
                   onConfirm={() =>
                     statusMutation.mutate({
                       id: order.id,
-                      status: 'cancelled' as OrderStatus,
+                      status: 'CANCELLED' as OrderStatus,
                     })
                   }
                   okText="确认"
