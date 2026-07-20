@@ -5,14 +5,26 @@ import { fetchOrderDetail, updateOrderStatus } from '../api/order';
 import type { OrderItem, OrderStatus } from '../types/api';
 import { formatDateTime, formatMoney } from '../utils/format';
 
-// 订单状态映射（与 OrderList 保持一致，与后端枚举大小写一致）
-const STATUS_META: Record<OrderStatus, { label: string; color: string }> = {
+// 订单状态映射（与 OrderList 保持一致；兼容大小写）
+const STATUS_META: Record<string, { label: string; color: string }> = {
   PENDING: { label: '待付款', color: 'warning' },
   PAID: { label: '已付款', color: 'processing' },
   SHIPPED: { label: '已发货', color: 'blue' },
   COMPLETED: { label: '已完成', color: 'success' },
   CANCELLED: { label: '已取消', color: 'default' },
+  pending: { label: '待付款', color: 'warning' },
+  paid: { label: '已付款', color: 'processing' },
+  shipped: { label: '已发货', color: 'blue' },
+  completed: { label: '已完成', color: 'success' },
+  cancelled: { label: '已取消', color: 'default' },
 };
+
+function statusOf(s: string): { label: string; color: string } {
+  const key = String(s || '').toUpperCase();
+  return (
+    STATUS_META[key] || { label: s ? String(s) : '-', color: 'default' }
+  );
+}
 
 // 订单状态流转按钮
 function getNextActions(status: OrderStatus): { label: string; next: OrderStatus; danger?: boolean }[] {
@@ -162,8 +174,8 @@ export default function OrderDetail({
               {order.orderNo}
             </Descriptions.Item>
             <Descriptions.Item label="状态">
-              <Tag color={STATUS_META[order.status].color}>
-                {STATUS_META[order.status].label}
+              <Tag color={statusOf(order.status).color}>
+                {statusOf(order.status).label}
               </Tag>
             </Descriptions.Item>
             <Descriptions.Item label="下单时间">

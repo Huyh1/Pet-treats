@@ -28,12 +28,20 @@ export default function Login() {
   const handleSubmit = async (values: LoginForm) => {
     try {
       const data: LoginResult = await login(values.username, values.password);
+      if (!data?.token) {
+        message.error('登录返回数据异常');
+        return;
+      }
       setAuth(data.token, data.admin);
       message.success(`欢迎回来，${data.admin.nickname || data.admin.username}`);
-      const from = (location.state as { from?: { pathname: string } } | null)
-        ?.from?.pathname;
-      navigate(from || '/dashboard', { replace: true });
-    } catch {
+      // 确保状态已写入后再跳转
+      setTimeout(() => {
+        const from = (location.state as { from?: { pathname: string } } | null)
+          ?.from?.pathname;
+        navigate(from || '/dashboard', { replace: true });
+      }, 50);
+    } catch (err) {
+      console.error('[登录失败]', err);
       // 错误已由拦截器统一提示
     }
   };

@@ -16,18 +16,28 @@ import type { Order, OrderPageQuery, OrderStatus } from '../types/api';
 import { formatDateTime, formatMoney } from '../utils/format';
 import OrderDetail from './OrderDetail';
 
-// 订单状态映射（与后端枚举一致）
-const STATUS_META: Record<
-  OrderStatus | 'all',
-  { label: string; color: string }
-> = {
+// 订单状态映射（与后端枚举一致；兼容大小写以防数据不一致）
+const STATUS_META: Record<string, { label: string; color: string }> = {
   all: { label: '全部', color: 'default' },
   PENDING: { label: '待付款', color: 'warning' },
   PAID: { label: '已付款', color: 'processing' },
   SHIPPED: { label: '已发货', color: 'blue' },
   COMPLETED: { label: '已完成', color: 'success' },
   CANCELLED: { label: '已取消', color: 'default' },
+  // 兼容小写（旧数据可能存在）
+  pending: { label: '待付款', color: 'warning' },
+  paid: { label: '已付款', color: 'processing' },
+  shipped: { label: '已发货', color: 'blue' },
+  completed: { label: '已完成', color: 'success' },
+  cancelled: { label: '已取消', color: 'default' },
 };
+
+function statusOf(s: string): { label: string; color: string } {
+  const key = String(s || '').toUpperCase();
+  return (
+    STATUS_META[key] || { label: s ? String(s) : '-', color: 'default' }
+  );
+}
 
 export default function OrderList() {
   const { message } = App.useApp();
@@ -71,9 +81,10 @@ export default function OrderList() {
       title: '状态',
       dataIndex: 'status',
       width: 100,
-      render: (s: OrderStatus) => (
-        <Tag color={STATUS_META[s].color}>{STATUS_META[s].label}</Tag>
-      ),
+      render: (s: OrderStatus) => {
+        const meta = statusOf(s as string);
+        return <Tag color={meta.color}>{meta.label}</Tag>;
+      },
     },
     {
       title: '下单时间',
