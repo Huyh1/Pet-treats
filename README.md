@@ -24,8 +24,8 @@
        │  Mock 数据        │  /api → proxy
        │                   ▼
        │            ┌──────────────┐
-       │            │  后端 API     │
-       │            │  localhost:8080│
+│            │  后端 API     │
+│            │  localhost:8544│
        │            │  Spring Boot  │
        │            │  + MyBatis-Plus│
        │            │  + H2 / MySQL │
@@ -58,9 +58,9 @@
 |------|------|------|
 | 🛍️ 前端商城 | `http://localhost:5173` | 用户端 SPA |
 | 🖥️ 后台管理 | `http://localhost:5174` | 管理员后台 (Ant Design) |
-| 🔧 后端 API | `http://localhost:8080/api` | Spring Boot REST |
-| 📖 Swagger | `http://localhost:8080/api/swagger-ui.html` | API 文档 |
-| 🗄️ H2 控制台 | `http://localhost:8080/api/h2-console` | 数据库管理 (JDBC URL: `jdbc:h2:mem:furou`) |
+| 🔧 后端 API | `http://localhost:8544/api` | Spring Boot REST |
+| 📖 Swagger | `http://localhost:8544/api/swagger-ui.html` | API 文档 |
+| 🗄️ H2 控制台 | `http://localhost:8544/api/h2-console` | 数据库管理 (JDBC URL: `jdbc:h2:mem:furou`) |
 
 **后台登录**: `admin` / `admin123`
 

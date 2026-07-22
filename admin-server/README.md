@@ -46,7 +46,7 @@ admin-server/
     │       ├── review/                   # 评价审核
     │       └── dashboard/                # 数据仪表盘
     └── resources/
-        ├── application.yml               # 主配置：端口 8080，context-path=/api，默认 dev
+        ├── application.yml               # 主配置：端口 8544，context-path=/api，默认 dev
         ├── application-dev.yml           # dev：连接真实 MySQL（192.168.1.31）
         ├── application-dev-h2.yml         # dev-h2：H2 内存库（无需外部 MySQL）
         ├── schema.sql                    # 建表脚本
@@ -96,7 +96,7 @@ mvn spring-boot:run
 # 方式 3：修改 application.yml 中的 spring.profiles.active
 ```
 
-启动后 H2 控制台：http://localhost:8080/api/h2-console （JDBC URL: `jdbc:h2:mem:pet_treats`，用户名 `sa`，密码空）
+启动后 H2 控制台：http://localhost:8544/api/h2-console （JDBC URL: `jdbc:h2:mem:pet_treats`，用户名 `sa`，密码空）
 
 ## 默认账号
 
@@ -107,8 +107,8 @@ mvn spring-boot:run
 ## API 文档
 
 启动后访问 Swagger UI：
-- **接口文档**：http://localhost:8080/api/swagger-ui.html
-- **OpenAPI JSON**：http://localhost:8080/api/v3/api-docs
+- **接口文档**：http://localhost:8544/api/swagger-ui.html
+- **OpenAPI JSON**：http://localhost:8544/api/v3/api-docs
 
 调用受保护接口时，在 Swagger 右上角点击 "Authorize" 按钮，输入：
 ```

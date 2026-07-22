@@ -31,7 +31,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # ----------------------- 配置 -----------------------
-BACKEND_PORT=8080
+BACKEND_PORT=8544
 FRONTEND_PORT=5173
 ADMIN_WEB_PORT=5174
 LOG_DIR="/tmp/pet-treats-logs"

@@ -19,7 +19,7 @@
 ```
 admin-web/
 ├── index.html
-├── vite.config.ts          # 端口 5174，代理 /api → http://localhost:8080
+├── vite.config.ts          # 端口 5174，代理 /api → http://localhost:8544
 ├── tsconfig.json
 ├── tailwind.config.js
 ├── postcss.config.js
@@ -67,7 +67,7 @@ admin-web/
 # 安装依赖
 pnpm install
 
-# 开发模式启动（默认 5174 端口，自动代理 /api → http://localhost:8080）
+# 开发模式启动（默认 5174 端口，自动代理 /api → http://localhost:8544）
 pnpm dev
 ```
 
@@ -84,7 +84,7 @@ pnpm dev
 
 ## 后端 API 约定
 
-- 基础地址：`http://localhost:8080/api`（开发期通过 Vite 代理转发）
+- 基础地址：`http://localhost:8544/api`（开发期通过 Vite 代理转发）
 - 统一响应：`{ code: 0, msg: "ok", data: ... }`，`code === 0` 表示成功
 - 鉴权方式：`Authorization: Bearer <token>` 请求头
 - 拦截器统一处理：
