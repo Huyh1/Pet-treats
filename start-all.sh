@@ -63,13 +63,13 @@ fi
 JAVA_VER=$(java -version 2>&1 | head -1 | awk -F'"' '{print $2}')
 echo -e "  ✅ Java ${GREEN}${JAVA_VER}${NC}"
 
-# Maven
-if ! command -v mvn &>/dev/null; then
-  echo -e "${RED}❌ 未找到 Maven，请先安装 Maven ≥ 3${NC}"
+# Maven Wrapper（无需系统安装 Maven，使用项目自带的 mvnw）
+if [ -x "admin-server/mvnw" ]; then
+  echo -e "  ✅ Maven Wrapper (mvnw) ${GREEN}就绪${NC}"
+else
+  echo -e "${RED}❌ 未找到 admin-server/mvnw，请先运行: cd admin-server && mvn wrapper:wrapper${NC}"
   exit 1
 fi
-MVN_VER=$(mvn -version 2>&1 | head -1 | awk '{print $3}')
-echo -e "  ✅ Maven ${GREEN}${MVN_VER}${NC}"
 
 # 端口占用检查
 check_port() {
@@ -122,7 +122,7 @@ else
 fi
 if $NEED_BUILD; then
   echo "  正在编译..."
-  mvn package -DskipTests -q
+  ./mvnw package -DskipTests -q
   echo -e "  ✅ 编译完成"
 else
   echo -e "  ✅ JAR 已是最新，跳过编译"

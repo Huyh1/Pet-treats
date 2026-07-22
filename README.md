@@ -42,7 +42,7 @@
 |------|---------|------|
 | Node.js | ≥ 18 | 前端运行环境 |
 | Java JDK | ≥ 17 | 后端编译与运行 |
-| Maven | ≥ 3 | 后端构建工具 |
+| Maven | ≥ 3（推荐使用项目自带的 Maven Wrapper） | 后端构建工具 |
 
 ### 一键启动
 
@@ -112,8 +112,8 @@ npm run build            # 输出到 admin-web/dist/
 ```bash
 cd admin-server
 
-# 编译（跳过测试）
-mvn package -DskipTests
+# 编译（跳过测试，使用 Maven Wrapper，无需安装 Maven）
+./mvnw package -DskipTests
 
 # 启动（H2 内存数据库，开发环境）
 java -jar target/admin-server.jar --spring.profiles.active=dev-h2
@@ -325,7 +325,7 @@ Tailwind config 与 `src/index.css` 中扩展了：
 ```bash
 # 打包
 cd admin-server
-mvn package -DskipTests
+./mvnw package -DskipTests
 
 # 部署 JAR（需替换数据库连接为生产环境）
 java -jar target/admin-server.jar --spring.profiles.active=prod
