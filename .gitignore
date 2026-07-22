@@ -30,6 +30,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# Maven 编译产物
+# Java / Maven compiled output
 admin-server/target/
-admin-server/logs/
+*.class
+*.jar
+*.war

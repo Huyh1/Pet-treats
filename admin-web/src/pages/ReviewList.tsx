@@ -21,7 +21,7 @@ import {
 import type { Review, ReviewPageQuery, ReviewStatus } from '../types/api';
 import { formatDateTime } from '../utils/format';
 
-// 评价状态映射（与后端一致：0=待审核 1=已通过 2=已驳回）
+// 评价状态映射（对齐后端 Integer: 0=待审 1=已通过 2=已驳回）
 const STATUS_META: Record<ReviewStatus | 'all', { label: string; color: string }> = {
   all: { label: '全部', color: 'default' },
   0: { label: '待审核', color: 'warning' },
@@ -42,7 +42,9 @@ function RatingStars({ value }: { value: number }) {
 export default function ReviewList() {
   const queryClient = useQueryClient();
   const { message } = App.useApp();
-  const [activeStatus, setActiveStatus] = useState<ReviewStatus | 'all'>(0);
+  const [activeStatus, setActiveStatus] = useState<ReviewStatus | 'all'>(
+    0,
+  );
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -206,7 +208,7 @@ export default function ReviewList() {
   const tabItems = (
     Object.keys(STATUS_META) as (ReviewStatus | 'all')[]
   ).map((key) => ({
-    key: String(key),
+    key,
     label: STATUS_META[key].label,
   }));
 
@@ -218,11 +220,9 @@ export default function ReviewList() {
     >
       <Tabs
         items={tabItems}
-        activeKey={String(activeStatus)}
+        activeKey={activeStatus}
         onChange={(key) => {
-          // key 是字符串，'all' / '0' / '1' / '2'
-          const next = key === 'all' ? 'all' : (Number(key) as ReviewStatus);
-          setActiveStatus(next);
+          setActiveStatus(key as ReviewStatus | 'all');
           setPagination((p) => ({ ...p, current: 1 }));
         }}
         style={{ padding: '0 16px' }}

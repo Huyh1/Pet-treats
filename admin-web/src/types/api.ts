@@ -105,7 +105,7 @@ export interface ProductPageQuery extends PageParams {
   status?: number;
 }
 
-// 订单（与后端枚举大小写保持一致）
+// 订单
 export type OrderStatus =
   | 'PENDING'
   | 'PAID'
@@ -143,8 +143,7 @@ export interface OrderPageQuery extends PageParams {
 }
 
 // 评价
-// 评价状态：0=待审核 1=已通过 2=已驳回（与后端一致）
-export type ReviewStatus = 0 | 1 | 2;
+export type ReviewStatus = 0 | 1 | 2; // 0=待审 1=已通过 2=已驳回
 
 export interface Review {
   id: number;

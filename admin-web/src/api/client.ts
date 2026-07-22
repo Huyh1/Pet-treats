@@ -21,9 +21,6 @@ client.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
-// 成功业务码：兼容 0 和 200（新旧 R.java 均可）
-const SUCCESS_CODES = new Set([0, 200]);
-
 // 响应拦截：统一处理业务码与 401
 client.interceptors.response.use(
   (response: AxiosResponse<ApiResult>) => {
@@ -32,7 +29,7 @@ client.interceptors.response.use(
     if (!result || typeof result.code !== 'number') {
       return response as unknown as AxiosResponse;
     }
-    if (SUCCESS_CODES.has(result.code)) {
+    if (result.code === 200) {
       return result.data as unknown as AxiosResponse;
     }
     // 业务错误

@@ -4,10 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.furou.admin.common.BizException;
 import com.furou.admin.common.PageResult;
+import com.furou.admin.module.product.entity.Product;
+import com.furou.admin.module.product.mapper.ProductMapper;
 import com.furou.admin.module.review.entity.Review;
 import com.furou.admin.module.review.mapper.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 评价业务：分页、通过/驳回、删除
@@ -17,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class ReviewService {
 
     private final ReviewMapper reviewMapper;
+    private final ProductMapper productMapper;
 
     /**
      * 分页查询
@@ -39,6 +47,19 @@ public class ReviewService {
         }
         wrapper.orderByDesc(Review::getCreatedAt);
         Page<Review> result = reviewMapper.selectPage(pageObj, wrapper);
+
+        // 批量填充商品名称
+        List<Review> records = result.getRecords();
+        if (!records.isEmpty()) {
+            Set<Long> productIds = records.stream()
+                    .map(Review::getProductId)
+                    .collect(Collectors.toSet());
+            Map<Long, String> nameMap = productMapper.selectBatchIds(productIds)
+                    .stream()
+                    .collect(Collectors.toMap(Product::getId, Product::getName));
+            records.forEach(r -> r.setProductName(nameMap.get(r.getProductId())));
+        }
+
         return new PageResult<>(result.getCurrent(), result.getSize(),
                 result.getTotal(), result.getPages(), result.getRecords());
     }
