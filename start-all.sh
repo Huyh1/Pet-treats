@@ -144,13 +144,13 @@ start_services() {
   log "${CYAN}启动前端服务...${NC}"
 
   cd admin-web
-  nohup npx vite --port $ADMIN_WEB_PORT --strictPort \
+  nohup npx vite --port $ADMIN_WEB_PORT --strictPort --host 0.0.0.0 \
     > "$LOG_DIR/admin-web.log" 2>&1 &
   save_pid $!
   log "  后台管理 PID: $! (端口 $ADMIN_WEB_PORT)"
   cd "$SCRIPT_DIR"
 
-  nohup npx vite --port $FRONTEND_PORT --strictPort \
+  nohup npx vite --port $FRONTEND_PORT --strictPort --host 0.0.0.0 \
     > "$LOG_DIR/frontend.log" 2>&1 &
   save_pid $!
   log "  前端商城 PID: $! (端口 $FRONTEND_PORT)"
