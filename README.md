@@ -47,10 +47,14 @@
 ### 一键启动
 
 ```bash
-./start-all.sh
+./start-all.sh            # 默认启动（全部后台运行）
+./start-all.sh start      # 启动全部服务（后台运行）
+./start-all.sh stop       # 停止全部服务
+./start-all.sh restart    # 重启全部服务
+./start-all.sh status     # 查看服务运行状态
 ```
 
-脚本会自动完成：环境检查 → 安装依赖 → 编译后端 → 按顺序启动所有服务。
+脚本会自动完成：环境检查 → 端口检测 → 安装依赖 → 编译后端 → 后台启动所有服务（启动后终端立即返回，不阻塞）。各服务日志输出到 `/tmp/pet-treats-logs/` 目录。
 
 ### 服务地址
 
